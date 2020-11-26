@@ -1,1 +1,113 @@
-nimmala.sushanth@accenture.com
+-- ProblemSet<No.00>, November <25> <2020>
+
+	-- Submission by <nimmala.sushanth@accenture.com> 
+	
+  1) Select the Employee with the top three salaries
+	
+  select * from (select * from employee order by salary desc) limit 3;
+		A142|TARA CUMMINGS|D04|99475|A187
+		A132|PAUL VINCENT|D01|94791|A120
+		A128|ADAM WAYNE|D05|94324|A165
+
+
+	2) Select the Employee with the least salary
+	select * from employee where salary=(select min(salary) from employee);
+    A111|JOHN HELLEN|D01|15380|A120
+
+	3) Select the Employee who does not have a manager in the department table
+	select e.name from employee e left join dept d on e.dep_id=d.dep_id where d.dep_manager IS NULL;
+	  /*  */
+
+
+	4) Select the Employee who is also a Manager
+	select name from employee e inner join dept d on e.dep_id=d.dep_id where e.name=d.dep_manager;
+	 BRUCE WILLS
+   ADAM JUSTIN
+   ROBERT SWIFT
+   NATASHA STEVENS
+
+
+	5) Select the Empolyee who is a Manager and has least salary
+	select * from employee where salary=(select min(salary) from employee e inner join dept d on e.dep_id=d.dep_id where e.name=d.dep_manager);
+	 A187|ROBERT SWIFT|D04|27700|A298 
+
+	
+	6) Select the total number of Employees in Communications departments
+	select count(e.e_id) from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_name='COMMUNICATIONS';
+	 6
+
+
+	7) Select the Employee in Health Department who has the top salary
+	select * from employee where salary=(select max(salary) from employee e inner join dept d where e.dep_id=d.dep_id and d.dep_name='HEALTH');
+	 A132|PAUL VINCENT|D01|94791|A120
+
+
+	8) Select the Employee in product depatment who has the least salary
+	select * from employee where salary=(select min(salary) from employee e inner join dept d where e.dep_id=d.dep_id and d.dep_name='PRODUCT');
+	 A156|NICK MARTIN|D03|50174|A178
+
+	
+	9) Select the count of Empolyees in Health with maximum salary 
+	select MAX(salary),count(e_id) from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_name='HEALTH';
+	 94791|6 
+
+
+	10) Select the Employees who report to Natasha Stevens
+	select * from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_manager='NATASHA STEVENS';
+	 A128|ADAM WAYNE|D05|94324|A165
+   A129|JOSEPH ANGELIN|D05|44280|A165
+   A165|NATASHA STEVENS|D05|31377|A298 
+
+
+	11) Display the Employee name,Employee count,Dep name,Dept manager in the Health department
+	select name,count(e_id),dep_name,dep_manager from employee e inner join dept d on e.dep_id=d.dep_id where dep_name='HEALTH';
+	 MARTIN TREDEAU|6|HEALTH|TIM ARCHER 
+
+	12) Display the Department id,Employee ids and Manager ids for the Communications department
+	select d.dep_id,e_id,manager_id from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_name='COMMUNICATIONS';
+	 D02|A116|A187
+   D02|A198|A187
+   D02|A187|A298
+   D02|A121|A187
+   D02|A194|A187
+   D02|A133|A187
+
+
+	13) Select the Employee with the least salary
+	select * from employee where salary=(select min(salary) from employee);
+	 A111|JOHN HELLEN|D01|15380|A120
+
+
+	14) Select the total expense for the department finance
+	select sum(salary) from employee e join dept d on e.dep_id=d.dep_id where dep_name='FINANCE';
+	 169981
+
+
+	15) Select the department which spends the least with Dept id and Dept manager name
+	select * from dept d join employee e on d.dep_id=e.dep_id where salary=(select min(salary) from employee);
+	 D01|HEALTH|TIM ARCHER|A111|JOHN HELLEN|D01|15380|A120
+
+
+	16) Select the count of Employees in each department
+	select d.dep_name,count(*) from employee e inner join dept d on e.dep_id=d.dep_id group by d.dep_name;
+	 COMMUNICATIONS|6
+   FINANCE|3
+   HEALTH|6
+   INSURANCE|3
+   PRODUCT|2
+
+
+	17) Select the count of Employees in each department having salary <10000
+	select d.dep_name,count(*) from employee e inner join dept d on e.dep_id=d.dep_id where e.salary<10000 group by d.dep_name;
+	/*  */
+
+
+	18) Select the total number of Employees in Dept id D04
+	select count(*) from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_id='D04' group by d.dep_name;
+	 3
+
+
+	20) Select the Employees who has Tim Cook as their manager
+	select e.name from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_manager='TIM COOK';
+	/*  */
+
