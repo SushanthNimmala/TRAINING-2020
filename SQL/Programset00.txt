@@ -110,4 +110,3 @@
 	20) Select the Employees who has Tim Cook as their manager
 	select e.name from employee e inner join dept d on e.dep_id=d.dep_id where d.dep_manager='TIM COOK';
 	/*  */
-
