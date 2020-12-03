@@ -1,0 +1,109 @@
+-- ProblemSet<No.01>, November 30> <2020>
+
+	-- Submission by <nimmala.sushanth@accenture.com> 
+	
+  1) List full details of all hotels
+	
+  select * from hotel;
+		H111|Empire Hotel|New York
+		H235|Park Place|New York
+		H432|Brownstone Hotel|Toronto
+		H498|James Plaza|Toronto
+		H193|Devon Hotel|Boston
+		H437|Clairmont Hotel|Boston
+
+
+  2) List full details of all hotels in New York
+	select * from hotel where city='New York';
+    		H111|Empire Hotel|New York
+		H235|Park Place|New York
+
+  3) List the names and cities of all guests, ordered according to their cities.
+  	select name,city from guest order by city;
+		Robert Swift|Atlanta
+Tara Cummings|Baltimore
+Edward Cane|Baltimore
+Tom Hancock|Philadelphia
+Adam Wayne|Pittsburgh
+Vanessa Parry|Pittsburgh
+
+4) List all details for non-smoking rooms in ascending order of price.
+	select * from room where type='N' order by price;
+		257|H437|N|140.0
+412|H111|N|145.0
+223|H437|N|155.0
+345|H498|N|160.0
+1267|H235|N|175.0
+1201|H193|N|175.0
+467|H498|N|180.0
+1289|H235|N|195.0
+
+5) List the number of hotels there are.
+	select count(*) from hotel;
+		6
+
+6) List the cities in which guests live. Each city should be listed only once.
+	select distinct(city) from guest;
+		Pittsburgh
+Baltimore
+Philadelphia
+Atlanta
+
+7) List the average price of a room.
+	select avg(price) from room;
+		155.666666666667
+
+8) List hotel names, their room numbers, and the type of that room.
+	select h.name,r.room_no,r.type from hotel h inner join room r on h.hotel_no=r.hotel_no;
+		Empire Hotel|313|S
+Empire Hotel|412|N
+Park Place|1267|N
+Park Place|1289|N
+Brownstone Hotel|876|S
+Brownstone Hotel|898|S
+James Plaza|345|N
+James Plaza|467|N
+Devon Hotel|1001|S
+Devon Hotel|1201|N
+Clairmont Hotel|223|N
+Clairmont Hotel|257|N
+
+9) List the hotel names, booking dates, and room numbers for all hotels in New York.
+	select h.name,b.date_from,b.date_to,b.room_no from hotel h inner join booking b on h.hotel_no=b.hotel_no;
+		Empire Hotel|1999-08-10|1999-08-15|412
+Empire Hotel|1999-08-18|1999-08-21|412
+Park Place|1999-09-05|1999-09-12|1267
+James Plaza|1999-09-15|1999-09-18|467
+James Plaza|1999-11-03|1999-11-05|345
+James Plaza|1999-11-30|1999-12-02|345
+Devon Hotel|1999-09-12|1999-09-14|1001
+Devon Hotel|1999-10-01|1999-10-06|1201
+Devon Hotel|1999-11-15|1999-11-19|1001
+Clairmont Hotel|1999-09-14|1999-09-17|223
+Clairmont Hotel|1999-10-04|1999-10-06|223
+
+10) What is the number of bookings that started in the month of September?
+	select count(*) from booking where date_from like '%-09-%';
+		4
+
+11) List the names and cities of guests who began a stay in New York in August.
+	select g.name,g.city from guest g inner join booking b inner join hotel h on g.guest_no=b.guest_no and b.hotel_no=h.hotel_no where h.city='New York' and b.date_from like '%-08-%';
+		Adam Wayne|Pittsburgh
+Tara Cummings|Baltimore
+
+12) List the hotel names and room numbers of any hotel rooms that have not been booked.
+
+13) List the hotel name and city of the hotel with the highest priced room.
+	select h.name,h.city from hotel h inner join room r on h.hotel_no=r.hotel_no where r.price=(select max(r.price) from room r);
+		Park Place|New York
+
+14) List hotel names, room numbers, cities, and prices for hotels that have rooms with prices lower than the lowest priced room in a Boston hotel.
+	select h.name,r.room_no,h.city,r.price from hotel h inner join room r on h.hotel_no=r.hotel_no where r.price<(select min(r.price) from room r inner join hotel h on r.hotel_no=h.hotel_no where h.city='Boston');
+		Brownstone Hotel|876|Toronto|124.0
+Brownstone Hotel|898|Toronto|124.0
+
+15) List the average price of a room grouped by city.
+	select avg(r.price) from room r inner join hotel h on r.hotel_no=h.hotel_no group by h.city;
+		155.0
+165.0
+147.0
